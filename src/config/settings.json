@@ -2,7 +2,7 @@
 
   "host": "localhost",
 
-  "dbName":"checklist_8",
+  "dbName":"parser",
 
   "user": "root",
 

@@ -11,55 +11,56 @@ namespace app\Controller;
 
 class ProxyController
 {
-    public function checkProxy()
+    public function searchProxy()
     {
-        //полный путь ко второму скрипту
-        $webpage = "detect.php";
+        $path = "http://webanetlabs.net/publ/9-1-0-15";
+        $page = file_get_contents($path);
+        $pattern = '|\n[\d.:]+|';
+        preg_match_all($pattern, $page, $out);
 
-//таймаут для коннекта к проксику
-        $timeout = 2;
+        // удаляем старые записи из файла
 
-        $head="GET $webpage HTTP/1.1\r\n\r\n";
-//proxy.txt - файл с проксиками
-        $fcontents = file ('file/proxy.txt');
-       // echo "Loading...";
-       // print_r($fcontents);
-        for($i=0; $i<count($fcontents); $i++) {
-            $fp = fsockopen($fcontents[$i], 8080, $errno, $errstr, 3);
-            if (!$fp) {
-                echo "Error: \n";
-            } else {
-                /* fputs ($fp, "GET / HTTP/1.0\r\nHost: www.example.com\r\n\r\n");
-                 while (!feof($fp)) {
-                     echo fgets ($fp,128);
-                 }
-                 */
-                echo "ok";
-            }
+        $fo = fopen("file/proxy.txt", "w");
+        fclose($fo);
 
-        }
-   /*     while (list ($line_num, $line) = each ($fcontents)) {
-            echo $line_num.") test <b>$line</b>.......";
-            $server = explode(":",trim($line));
-            $fp = @fsockopen($server[0], $server[1], $errno, $errstr, $timeout);
-            if($fp) {
-                unset($result);
-                fputs($fp,$head);
-                while(!feof($fp)) {
-                    $returndata.=fread($fp,1024);
-                }
-                $result = explode("|||",$returndata);
-                echo "Proxy is life";
-                if (trim($result[1])=="") {
-                    echo "and anonim \n\n";
-                } else {
-                    echo "no anonim...\n\n";
-                }
-                fclose($fp);
-            } else {
-                echo "(".$errno.") ".$errstr."\n\n";
-            }
-        }*/
+        //записываем новые данные
+        file_put_contents('file/proxy.txt',$out[0],FILE_APPEND);
+
     }
+
+
+    public function checkProxy(){
+        //$host = "http://site.com";
+        $path = "file/proxy.txt";
+        $fo = fopen("file/coolProxy.txt", "w");
+        fclose($fo);
+
+        $f_proxy = fopen($path, 'r');
+        $proxy = fread($f_proxy, 65000);
+        $proxy_server = explode("\n", $proxy);
+
+        for ($i = 0; $i <= count($proxy_server) - 1; $i++) {
+            $proxy_serv[$i] = explode(":", $proxy_server[$i]);
+        }
+        fclose($f_proxy);
+
+        for ($i = 0; $i < count($proxy_serv); $i++) {
+            //echo $proxy_serv[$i][0];
+            $fp = @fsockopen($proxy_serv[$i][0], $proxy_serv[$i][1], $errno, $errstr, 0.5);
+            if (!$fp)
+            {
+
+             echo $i." Error <br />";
+            }
+            else{
+                file_put_contents('file/coolProxy.txt', $proxy_serv[$i][0].":".$proxy_serv[$i][1]."\n",FILE_APPEND);
+                echo $i." ok <br />";
+
+            }
+        }
+
+    }
+
+
 
 }
