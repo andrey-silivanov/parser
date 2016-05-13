@@ -1,6 +1,7 @@
 <?php
 return array(
     //'/' => 'MainController@getIndex',
-    '/' => 'ProxyController@checkProxy',
-    '/parser' => 'ParserController@postIndex',
+    '/' => 'ProxyController@test',
+    '/parser' => 'ProxyController@checkProxy',
+    '/google' => 'ParserController@googleParse',
 );

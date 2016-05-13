@@ -7,13 +7,36 @@
  */
 
 namespace app\Models;
-
-
-class People extends Model
+use core\DataBase;
+use PDO;
+class People
 {
+    protected $db;
+
+
+    public function __construct()
+    {
+        $this->db = DataBase::getInstance();
+
+    }
+
+
+
     public function getPeople()
     {
+        $arr = [];
+        $sql = "SELECT * FROM names ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($row as $key => $value) {
+                    $arr[$key] = $value;
+           /* foreach ($value as $k => $v) {
+                $arr[$k] = $v;
+            }*/
 
+        }
+        return $arr;
     }
 
 }
