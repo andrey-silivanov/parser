@@ -26,7 +26,7 @@ class DataBase
 
     public static function getInstance()
     {
-
+        set_time_limit(12000);
         $settings = self::settings();
         $host = $settings->host;
         $db_name = $settings->dbName;

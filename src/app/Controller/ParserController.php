@@ -8,127 +8,135 @@
 
 namespace app\Controller;
 
+use app\Models\People;
+
+
 
 class ParserController
 {
     public $name;
     public $surname;
     protected $url;
-    protected  $content;
+    protected $content;
+    protected $user_id;
 
-    public function __construct()
+    public function __construct($name, $surname, $user_id)
     {
         //  $this->name = $_POST['name'];
         //  $this->surname = $_POST['surname'];
-        $this->name = "Jessica";
-        $this->surname = "Alba";
-
-
-    }
-
-    public function postIndex()
-    {
-
-        //$arrUrl = $this->googleParse();
-
-        // $t = $this->siteParse($arrUrl[0]);
-
+        $this->name = $name;
+        $this->surname = $surname;
+        $this->user_id = $user_id;
 
     }
 
-    public function googleParse()
+    public function google()
     {
 
-       $this->content = $this->getContent();
-        echo $this->content;
-      // $t = $this->getTitle();
-     //  $url = $this->getUrl();
-       // $snippet = $this->getSnippet();
-       // print_r($url);
-      /*  for($i=0; $i<count($t); $i++){
-            echo $t[$i]."-=-".$url[$i]."<br />";
-        }*/
-       // echo $page;
-        //file_put_contents('file/page.txt', $this->content);
+        $user_id = $this->user_id;
+        $this->content = $this->getContent();
+        // echo $this->content;
+        $pars_array = [];
+
+       $pars_array['title'] = $this->getTitle();
+        $pars_array['url'] = $this->getUrl();
+        $pars_array['snippet'] = $this->getSnippet();
+        $pars_array = $this->checkParsing($pars_array);
+
+       // print_r($pars_array);
+       // echo count($pars_array);
+       // $m->saveResult($pars_array[0],$user_id);
+        for($i=0; $i<count($pars_array); $i++){
+           // print_r($pars_array[$i]);
+            $m = new People();
+            $m->saveResult($pars_array[$i],$user_id);
+           // echo $i;
+        }
 
 
-        //   $path = 'http://www.google.com/search?q=' . $this->name . '+' . $this->surname;
-        //echo $path;
-        //   $page = file_get_contents($path);
-        //   $page = iconv('windows-1251', 'utf-8', $page);
-        //  echo $page;
+        /*  for($i=0; $i<10; $i++){
+             echo $title[$i]." - <b>"
+                 .$url[$i]." - </b>"
+                 .$snippet[$i]." - <hr>";
+          }*/
+        /// print_r($title);
+        //  print_r($url);
+        // print_r($snippet);
 
-
-        /* */
-
-
-        //echo $out[0][4];
-        /*   $page = iconv('windows-1251', 'utf-8', $page);
-           $pattern = '/q=htt\w{1,2}:\/\/.+?&/';
-           preg_match_all($pattern, $page, $out);
-           $arr = [];
-           for ($i = 0; $i < count($out[0]); $i++) {
-               $arr[$i] = $out[0][$i];
-               $arr[$i] = $this->mySub($arr[$i]);
-           }
-           return $arr;*/
     }
 
     public function getTitle()
     {
-        $f = fopen('file/page.txt', 'r');
-        $file = fread($f, 65000);
 
         $arr = [];
-
-        $pattern = '|<h3 class="r"><a[^>]+>(.+?)</a><\/h3>|iu';
-        preg_match_all($pattern, $file, $out);
-        for($i=0; $i<count($out[1]); $i++){
-            $arr[$i] = strip_tags($out[1][$i]);
+        $i = 0;
+      /*  $f = fopen('file/page.txt', 'r');
+        $file = fread($f, 650000);*/
+        $html = str_get_html($this->content);
+        if (count($html->find('.r'))) {
+            foreach ($html->find('.r > a') as $div) {
+                $arr[$i] = strip_tags($div->innertext);
+                $i++;
+            }
         }
+        /*
+
+          $pattern = '|<h3 class="r">.*<a[^>]+>(.+?)</a><\/h3>|iu';
+          preg_match_all($pattern, $file, $out);
+          for($i=0; $i<count($out[1]); $i++){
+              $arr[$i] = strip_tags($out[1][$i]);
+          }*/
         return $arr;
     }
 
 
-
     public function getUrl()
     {
-        //$f = fopen($this->content, 'r');
-        //$file = fread($f, 6500000);
+
         $arr = [];
-        $pattern = '|<h3 class="r"><a href="/url\?q=(.*?)?>|';
-        preg_match_all($pattern, $this->content, $out);
-        //print_r($out[1]);
-       for($i=0; $i<count($out[1]); $i++){
-            echo $out[1][$i]."<br />";
+        /*
+                $f = fopen('file/page.txt', 'r');
+                $file = fread($f, 650000);*/
+        $i = 0;
+       $html = str_get_html($this->content);
+        if (count($html->find('.r'))) {
+
+            foreach ($html->find('.r a') as $div) {
+                $arr[$i] = $div->attr['href'];
+                $i++;
+            }
         }
-       // return $arr;
+        return $arr;
+
     }
 
     public function getSnippet()
     {
+        /*$f = fopen('file/page.txt', 'r');
+        $file = fread($f, 650000);*/
         $arr = [];
-        $pattern = '/<span class="st">[\S\s]*?<\/span>/';
-        preg_match_all($pattern, $this->content, $out);
-        //print_r($out);
-        for($i=0; $i<count($out[0]); $i++){
-            echo $out[0][$i]."<br /><hr />";
+        $i = 0;
+        $html = str_get_html($this->content);
+        if (count($html->find('.st'))) {
+
+            foreach ($html->find('.st') as $div) {
+
+                $arr[$i] = strip_tags($div->innertext);
+                $i++;
+
+            }
         }
+        return $arr;
+        /* $pattern = '/<span class="st">[\S\s]*?<\/span>/';*/
     }
 
-    public function mySub($string)
-    {
-        $string = substr($string, 2);
-        $string = substr($string, 0, -1);
-        return $string;
-    }
 
     public function getContent()
     {
-         //$this->url = "http://www.gibdd.ru/";
-        $this->url = 'http://www.google.com/search?q=' . $this->name . '+' . $this->surname;
+        //$url = "http://www.gibdd.ru/";
+         $url = 'http://www.google.com/search?q=' . $this->name . '+' . $this->surname;
         //$this->url = 'http://www.google.com/';
-       //  $this->url = 'http://socksproxylist24.blogspot.com/2016/05/13-05-16-socks-proxy-list_85.html#more';
+        //  $this->url = 'http://socksproxylist24.blogspot.com/2016/05/13-05-16-socks-proxy-list_85.html#more';
 
         $path = 'file/coolProxy.txt';
         $f_proxy = fopen($path, 'r');
@@ -138,29 +146,47 @@ class ParserController
         $step = 0;
         $try = true;
         //$arr =[];
-        while ($try) {
-            $proxy = isset($proxies[$step]) ? $proxies[$step] : null;
+       // print_r($proxies);
+         while ($try) {
+          $proxy = isset($proxies[$step]) ? $proxies[$step] : null;
 
-            //$proxy = $proxies[140];
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $this->url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // возвращает строку
-            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1); // редирект
-            curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; ru; rv:1.9.0.1) Gecko/2008070208');
-           // curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
-            curl_setopt($ch, CURLOPT_PROXY, $proxy);
-           // curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
-            $out = curl_exec($ch);
-            // $out = iconv('CP1251', 'UTF-8', curl_exec($ch));
-            $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            $error = curl_error($ch);
-            //echo $error;
-            curl_close($ch);
-            //$arr[$step]=$http_code;
-            // echo $http_code;
-            $step++;
-            $try = (($step < $steps) && $http_code != 200);
-        }
+       // $proxy = "198.2.202.52:8090";
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // возвращает строку
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1); // редирект
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; ru; rv:1.9.0.1) Gecko/2008070208');
+         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 20);
+          curl_setopt($ch, CURLOPT_PROXY, $proxy);
+         curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
+        $out = curl_exec($ch);
+        // $out = iconv('CP1251', 'UTF-8', curl_exec($ch));
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $error = curl_error($ch);
+        //echo $error;
+        curl_close($ch);
+        //$arr[$step]=$http_code;
+        // echo $http_code;
+        $step++;
+        $try = (($step < $steps) && $http_code != 200);
+         }
         return $out;
+    }
+
+    public function checkParsing($arr)
+    {
+        $checkArray = [];
+        $j = 0;
+        print_r($arr);
+        for ($i = 0; $i < count($arr['title']); $i++) {
+
+            if (strpos($arr['title'][$i], $this->name) !== false || strpos($arr['snippet'][$i], $this->name) !== false) {
+                $checkArray[$j]['title'] = $arr['title'][$i];
+                $checkArray[$j]['snippet'] = $arr['snippet'][$i];
+                $checkArray[$j]['url'] = $arr['url'][$i];
+                $j++;
+            }
+        }
+        return $checkArray;
     }
 }

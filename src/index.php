@@ -1,6 +1,6 @@
 <?php
 
-require 'core' . DIRECTORY_SEPARATOR . 'AutoLoad.php';
+/*require 'core' . DIRECTORY_SEPARATOR . 'AutoLoad.php';
 use core\Router;
 
 //автозагрузка
@@ -12,9 +12,15 @@ define('ROOT', dirname(__FILE__));
 
 //require_once(ROOT.'\vendor\Router.php');
 $router = new Router();
-$router->Start();
+$router->Start();*/
+
+require 'vendor/autoload.php';
+use app\Controller\Controller;
 
 
+
+$n = new Controller();
+$n->Start();
 
 
 /*E:\OpenServer\modules\php\PHP-5.6\php E:\OpenServer\domains\parser\src\index.php*/
