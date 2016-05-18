@@ -1,15 +1,12 @@
 {
-    "name": "silivanov_aa/src",
-    "authors": [
-        {
-            "name": "Silivanov Andrey",
-            "email": "silivanov_aa@groupbwt.com"
-        }
-    ],
     "require": {
-        "react/react": "^0.4.2"
+        "react/http": "0.3.*"
     },
     "autoload": {
+        "psr-0": {
+            "NS\\": "src/",
+            "Filter_": "src/PEAR"
+        },
         "classmap": ["app/Controller", "app/Models", "core"]
     }
 }

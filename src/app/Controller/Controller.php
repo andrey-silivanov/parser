@@ -21,22 +21,33 @@ class Controller
     {
         $people_m = new People();
         $proxy = new ProxyController();
-       // $proxy->searchProxy();
-       // $proxy->getProxy();
-        $people = $people_m -> getPeople();
+        echo "PROXY LOADING <br/>";
 
-        for($i=0; $i<count($people); $i++){
-            $p = new ParserController($people[$i]['first'],$people[$i]['last'],$people['id']);
-            $p->google();
+        $proxy->searchProxy();
+        $proxy->searchProxy2();   // парсинг списков прокси
+        $proxy->searchProxy3();
+        $proxy->searchProxy4();
+
+
+        $proxy->getProxy();  //проверка прокси
+
+        $people = $people_m->getPeople();
+
+        for ($i = 0; $i < count($people); $i++) {
+
+            echo $people[$i]['first'] . " " . $people[$i]['last'] . "\n";
+            $p = new ParserController();
+            $p->google($people[$i]['first'], $people[$i]['last'], $people[$i]['id']);
+            if ($i % 500 == 0 && $i != 0) {
+                echo "PROXY Loading <br/>";
+                $proxy->searchProxy();
+                $proxy->searchProxy2();   // парсинг списков прокси
+                $proxy->searchProxy3();
+                $proxy->searchProxy4();
+                $proxy->getProxy();
+            }
+            sleep(3);
         }
-
-
-       // $proxy->searchProxy();
-     // $proxy->getProxy();
-        //$proxy_array = $proxy->getProxy();
-       // print_r($proxy_array);
-      //
-      //  $p->google();
 
     }
 

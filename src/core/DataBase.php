@@ -26,23 +26,21 @@ class DataBase
 
     public static function getInstance()
     {
-        set_time_limit(12000);
+
         $settings = self::settings();
         $host = $settings->host;
         $db_name = $settings->dbName;
         $user = $settings->user;
         $pass = $settings->password;
 
-        if (is_null(self::$instance)) {
             try {
-                self::$instance = new PDO('mysql:host=' . $host . ';dbname=' . $db_name, $user, $pass);
+                $db = new PDO('mysql:host=' . $host . ';dbname=' . $db_name, $user, $pass);
             } catch (PDOException $e) {
                 print "Error DataBase!: " . $e->getMessage() . "<br/>";
                 die();
             }
+            return $db;
 
-        }
-        return self::$instance;
     }
 
     private static function settings()
