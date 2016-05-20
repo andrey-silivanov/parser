@@ -21,33 +21,42 @@ class Controller
     {
         $people_m = new People();
         $proxy = new ProxyController();
-        echo "PROXY LOADING <br/>";
-
+        echo "PROXY LOADING... \n";
+/*
         $proxy->searchProxy();
+        $proxy->searchProxy5();
         $proxy->searchProxy2();   // парсинг списков прокси
         $proxy->searchProxy3();
         $proxy->searchProxy4();
+        $proxy->searchProxy6();  // нет рабочих
+        $proxy->searchProxy7();
 
-
-        $proxy->getProxy();  //проверка прокси
-
-        $people = $people_m->getPeople();
-
-        for ($i = 0; $i < count($people); $i++) {
-
-            echo $people[$i]['first'] . " " . $people[$i]['last'] . "\n";
-            $p = new ParserController();
-            $p->google($people[$i]['first'], $people[$i]['last'], $people[$i]['id']);
-            if ($i % 500 == 0 && $i != 0) {
-                echo "PROXY Loading <br/>";
-                $proxy->searchProxy();
-                $proxy->searchProxy2();   // парсинг списков прокси
-                $proxy->searchProxy3();
-                $proxy->searchProxy4();
-                $proxy->getProxy();
-            }
-            sleep(3);
+        $proxy->getProxy();*/  //проверка прокси
+         echo "PARSING START \n";
+         $people = $people_m->getPeople();
+        $checkPeople = $people_m->getResult();
+        if(!empty($checkPeople)){
+            $checkPeople = $checkPeople[0];
         }
+        else{
+            $checkPeople = 0;
+        }
+        echo $checkPeople;
+         /*for ($i = $checkPeople; $i < 5; $i++) {
+
+             echo $people[$i]['first'] . " " . $people[$i]['last'] . "\n";
+             $p = new ParserController();
+             $p->google($people[$i]['first'], $people[$i]['last'], $people[$i]['id']);
+             if ($i % 500 == 0 && $i != 0) {
+                 echo "PROXY Loading <br/>";
+                 $proxy->searchProxy();
+                 $proxy->searchProxy2();   // парсинг списков прокси
+                 $proxy->searchProxy3();
+                 $proxy->searchProxy4();
+                 $proxy->getProxy();
+             }
+             sleep(3);
+         }*/
 
     }
 

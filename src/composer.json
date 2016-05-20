@@ -1,6 +1,7 @@
 {
     "require": {
-        "react/http": "0.3.*"
+        "react/http": "0.3.*",
+        "react/promise": "^2.4"
     },
     "autoload": {
         "psr-0": {
