@@ -9,9 +9,14 @@ $proxy = new \app\Controller\ParserController();
 $i = 0;
 $people = $people_model->getPeopleLimit(0,264);
 
-for($i=0; count($people); $i++ ){
-    echo $people[$i]['first']."\n";
-    sleep(1);
+for ($i = 0; $i < count($people); $i++) {
+
+    echo $people[$i]['first'] . " " . $people[$i]['last'] . "\n";
+
+    $p = new \app\Controller\ParserController();
+
+    $p->google($people[$i]['first'], $people[$i]['last'], $people[$i]['id']);
+    sleep(2);
 }
 
 
