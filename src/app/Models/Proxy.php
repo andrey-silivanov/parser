@@ -23,7 +23,7 @@ class Proxy
             $db->beginTransaction();
             foreach ($proxies as $proxy) {
                 // echo $proxy."\n";
-                $stmt->bindValue(':ip', $proxy);
+                $stmt->bindValue(':ip', trim(strip_tags($proxy)));
                 $stmt->execute();
             }
             $db->commit();
@@ -74,6 +74,21 @@ class Proxy
         $sql = "SELECT * FROM proxy WHERE status = 'good'";
         $stm = $db->query($sql);
         $arr = $stm->fetchAll(PDO::FETCH_ASSOC);
+        return $arr;
+    }
+
+    public function getProxyLimit($start, $end)
+    {
+        $db = DataBase::getInstance();
+        $arr = [];
+        $sql = "SELECT * FROM proxy LIMIT $start,$end";
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($row as $key => $value) {
+            $arr[$key] = $value;
+
+        }
         return $arr;
     }
 }
