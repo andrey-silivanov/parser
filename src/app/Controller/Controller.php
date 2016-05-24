@@ -12,8 +12,8 @@ use app\Controller\ProxyController;
 use app\Controller\ParserController;
 use app\Models\People;
 
-include 'app/Libs/simple_html_dom.php';
 
+include 'app/Libs/simple_html_dom.php';
 class Controller
 {
 
@@ -22,16 +22,17 @@ class Controller
         $people_m = new People();
         $proxy = new ProxyController();
         echo "PROXY LOADING... \n";
-/*
-        $proxy->searchProxy();
-        $proxy->searchProxy5();
-        $proxy->searchProxy2();   // парсинг списков прокси
-        $proxy->searchProxy3();
-        $proxy->searchProxy4();
-        $proxy->searchProxy6();  // нет рабочих
-        $proxy->searchProxy7();
 
-        $proxy->getProxy();*/  //проверка прокси
+       // $proxy->searchProxy();
+       // $proxy->searchProxy2();
+        /*      $proxy->searchProxy5();
+                 // парсинг списков прокси
+              $proxy->searchProxy3();
+              $proxy->searchProxy4();
+              $proxy->searchProxy6();  // нет рабочих
+              $proxy->searchProxy7();*/
+
+       // $proxy->getProxy(); //проверка прокси
          echo "PARSING START \n";
          $people = $people_m->getPeople();
         $checkPeople = $people_m->getResult();
@@ -42,7 +43,7 @@ class Controller
             $checkPeople = 0;
         }
         echo $checkPeople;
-         /*for ($i = $checkPeople; $i < 5; $i++) {
+         for ($i = $checkPeople; $i < 5; $i++) {
 
              echo $people[$i]['first'] . " " . $people[$i]['last'] . "\n";
              $p = new ParserController();
@@ -56,7 +57,7 @@ class Controller
                  $proxy->getProxy();
              }
              sleep(3);
-         }*/
+         }
 
     }
 

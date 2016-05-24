@@ -6,8 +6,8 @@ require 'vendor/autoload.php';
 use app\Controller\Controller;
 use app\Controller\ParserController;
 
-$n = new Controller();
-$n->Start();
+//$n = new Controller();
+//$n->Start();
 
 /*require 'vendor/autoload.php';
 
@@ -30,6 +30,35 @@ $read->on('data', function ($data, $read) use ($write, $proxy) {
 });
 
 $loop->run();*/
+
+
+$loop = React\EventLoop\Factory::create();
+$process = new React\ChildProcess\Process('php child-child.php');
+$process->on('exit', function($exitCode, $termSignal) {
+    echo "Child exit\n";
+});
+$loop->addTimer(0.001, function($timer) use ($process) {
+    $process->start($timer->getLoop());
+    $process->stdout->on('data', function($output) {
+        echo "Child script says: {$output}";
+    });
+});
+
+$process2 = new React\ChildProcess\Process('php child-child2.php');
+$process2->on('exit', function($exitCode, $termSignal) {
+    echo "Child exit\n";
+});
+$loop->addTimer(0.001, function($timer) use ($process2) {
+    $process2->start($timer->getLoop());
+    $process2->stdout->on('data', function($output) {
+        echo "Child 2 script says: {$output}";
+    });
+});
+
+$loop->addPeriodicTimer(5, function($timer) {
+    echo "Parent cannot be blocked by child\n";
+});
+$loop->run();
 
 /*E:\OpenServer\modules\php\PHP-5.6\php E:\OpenServer\domains\parser\src\index.php*/
 

@@ -43,7 +43,7 @@ class DataBase
 
     }
 
-    private static function settings()
+    public static function settings()
     {
         $f = file_get_contents('config/settings.json');
         $settings = json_decode($f);

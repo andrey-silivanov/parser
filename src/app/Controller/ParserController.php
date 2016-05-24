@@ -22,7 +22,7 @@ class ParserController extends Controller
 
     public function google($name, $surname, $user_id = null)
     {
-        $url = 'http://phpclub.ru/talk/threads/%D0%A4%D1%83%D0%BD%D0%BA%D1%86%D0%B8%D1%8F-%D0%BF%D0%BE%D0%BB%D0%B8%D0%BD%D0%B4%D1%80%D0%BE%D0%BC.70626/';
+       // $url = 'http://phpclub.ru/talk/threads/%D0%A4%D1%83%D0%BD%D0%BA%D1%86%D0%B8%D1%8F-%D0%BF%D0%BE%D0%BB%D0%B8%D0%BD%D0%B4%D1%80%D0%BE%D0%BC.70626/';
         $url = 'http://www.google.com/search?num=20&q=' . $name . '+' . $surname;
         $content = $this->getContent($url);
         if (empty($content)) {

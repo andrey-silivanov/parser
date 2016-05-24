@@ -66,7 +66,7 @@ class ProxyController extends Controller
         }
         unset($arr1[0]);
         $this->proxy_model->saveProxy($arr1);
-        print_r($arr1);
+        //print_r($arr1);
     }
 
 
