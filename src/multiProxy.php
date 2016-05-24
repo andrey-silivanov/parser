@@ -3,38 +3,25 @@
 
 
 require 'vendor/autoload.php';
-use app\Controller\Controller;
-use app\Controller\ParserController;
 
-//$n = new Controller();
-//$n->Start();
+use app\Controller\ProxyController;
 
-/*require 'vendor/autoload.php';
 
-$loop = React\EventLoop\Factory::create();
+$proxy_model = new \app\Models\Proxy();
+$proxy_model -> clearProxy();
+$proxy = new ProxyController();
+$proxy->searchProxy();
+$proxy->searchProxy2();
+$proxy->searchProxy5();    // парсинг списков прокси
+$proxy->searchProxy4();
+$proxy->searchProxy6();
+$proxy->searchProxy7();
 
-$proxy = new \app\Controller\ProxyController();
-
-$read = new \React\Stream\Stream(fopen('php://stdin', 'r+'), $loop);
-$write = new \React\Stream\Stream(fopen('php://stdout', 'w+'), $loop);
-
-$read->on('data', function ($data, $read) use ($write, $proxy) {
-    if (trim($data) == 'start') {
-        $write->close();
-        $read->close();
-    }
-
-    $line = $proxy->searchProxy2();
-    $line .= PHP_EOL;
-    $write->write($line);
-});
-
-$loop->run();*/
 
 
 $loop = React\EventLoop\Factory::create();
 // Stream 1
-$process = new React\ChildProcess\Process('php stream1.php');
+$process = new React\ChildProcess\Process('php proxyStream1.php');
 $process->on('exit', function($exitCode, $termSignal) {
     echo "Child exit\n";
 });
@@ -46,7 +33,7 @@ $loop->addTimer(0.001, function($timer) use ($process) {
 });
 
 // Stream 2
-$process2 = new React\ChildProcess\Process('php stream2.php');
+$process2 = new React\ChildProcess\Process('php proxyStream2.php');
 $process2->on('exit', function($exitCode, $termSignal) {
     echo "Child exit\n";
 });
@@ -58,7 +45,7 @@ $loop->addTimer(0.001, function($timer) use ($process2) {
 });
 
 // Stream 3
-$process3 = new React\ChildProcess\Process('php stream3.php');
+$process3 = new React\ChildProcess\Process('php proxyStream3.php');
 $process3->on('exit', function($exitCode, $termSignal) {
     echo "Child exit\n";
 });
@@ -70,7 +57,7 @@ $loop->addTimer(0.001, function($timer) use ($process3) {
 });
 
 // Stream 4
-$process4 = new React\ChildProcess\Process('php stream4.php');
+$process4 = new React\ChildProcess\Process('php proxyStream4.php');
 $process4->on('exit', function($exitCode, $termSignal) {
     echo "Child exit\n";
 });
@@ -86,5 +73,5 @@ $loop->addPeriodicTimer(5, function($timer) {
 });
 $loop->run();
 
-/*E:\OpenServer\modules\php\PHP-5.6\php E:\OpenServer\domains\parser\src\index.php*/
+/*E:\OpenServer\modules\php\PHP-5.6\php E:\OpenServer\domains\parser\src\parser.php*/
 
