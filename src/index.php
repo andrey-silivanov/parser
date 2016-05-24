@@ -33,7 +33,7 @@ $loop->run();*/
 
 
 $loop = React\EventLoop\Factory::create();
-$process = new React\ChildProcess\Process('php child-child.php');
+$process = new React\ChildProcess\Process('php stream1.php');
 $process->on('exit', function($exitCode, $termSignal) {
     echo "Child exit\n";
 });
@@ -44,7 +44,7 @@ $loop->addTimer(0.001, function($timer) use ($process) {
     });
 });
 
-$process2 = new React\ChildProcess\Process('php child-child2.php');
+$process2 = new React\ChildProcess\Process('php stream2.php');
 $process2->on('exit', function($exitCode, $termSignal) {
     echo "Child exit\n";
 });
