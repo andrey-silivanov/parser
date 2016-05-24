@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Май 16 2016 г., 11:03
+-- Время создания: Май 24 2016 г., 17:48
 -- Версия сервера: 5.5.48
 -- Версия PHP: 5.6.19
 
@@ -1041,11 +1041,24 @@ INSERT INTO `names` (`id`, `first`, `last`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `proxy`
+--
+
+CREATE TABLE IF NOT EXISTS `proxy` (
+  `id` int(11) NOT NULL,
+  `ip` varchar(30) NOT NULL,
+  `status` enum('bad','good') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `result`
 --
 
 CREATE TABLE IF NOT EXISTS `result` (
   `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `title` varchar(120) NOT NULL,
   `url` varchar(120) NOT NULL,
   `snippet` text NOT NULL
@@ -1064,6 +1077,12 @@ ALTER TABLE `names`
   ADD KEY `first` (`last`(255));
 
 --
+-- Индексы таблицы `proxy`
+--
+ALTER TABLE `proxy`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Индексы таблицы `result`
 --
 ALTER TABLE `result`
@@ -1078,6 +1097,11 @@ ALTER TABLE `result`
 --
 ALTER TABLE `names`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11203250;
+--
+-- AUTO_INCREMENT для таблицы `proxy`
+--
+ALTER TABLE `proxy`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT для таблицы `result`
 --
