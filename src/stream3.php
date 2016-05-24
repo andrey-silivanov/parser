@@ -10,6 +10,10 @@ $people_model = new \app\Models\People();
 $proxy = new \app\Controller\ParserController();
 $i = 0;
 $people = $people_model->getPeopleLimit(528,264);
-print_r($people);
+
+for($i=0; count($people); $i++ ){
+    echo $people[$i]['first']."\n";
+    sleep(1);
+}
 echo "<hr />";
 
