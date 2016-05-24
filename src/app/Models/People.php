@@ -73,17 +73,17 @@ class People
 
     public function getPeopleLimit($start, $end){
 
-            $db = DataBase::getInstance();
-            $arr = [];
-            $sql = "SELECT * FROM names LIMIT $start,$end";
-            $stmt = $db->prepare($sql);
-            $stmt->execute();
-            $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            foreach ($row as $key => $value) {
-                $arr[$key] = $value;
+        $db = DataBase::getInstance();
+        $arr = [];
+        $sql = "SELECT * FROM names LIMIT $start,$end";
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($row as $key => $value) {
+            $arr[$key] = $value;
 
-            }
-            return $arr;
+        }
+        return $arr;
 
 
     }

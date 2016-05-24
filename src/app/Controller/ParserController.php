@@ -101,7 +101,7 @@ class ParserController extends Controller
         $try = true;
 
         while ($try) {
-          $proxy = isset($proxies[$step]['ip']) ? $proxies[$step]['ip'] : null;
+            $proxy = isset($proxies[$step]['ip']) ? $proxies[$step]['ip'] : null;
 
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
@@ -110,7 +110,7 @@ class ParserController extends Controller
             curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; ru; rv:1.9.0.1) Gecko/2008070208');
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
             curl_setopt($ch, CURLOPT_PROXY, $proxy);
-         //  @curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
+            //  @curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
             $out = curl_exec($ch);
             $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             curl_close($ch);

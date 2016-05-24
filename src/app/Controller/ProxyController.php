@@ -32,7 +32,7 @@ class ProxyController extends Controller
         preg_match_all($pattern, $page, $out);
 
         $this->proxy_model->saveProxy($out[0]);
-        //file_put_contents('file/proxy.txt', $out[0], FILE_APPEND);
+
     }
 
     public function searchProxy2()
@@ -44,7 +44,7 @@ class ProxyController extends Controller
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1); // редирект
         curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; ru; rv:1.9.0.1) Gecko/2008070208');
         $out = curl_exec($ch);
-        //$out = iconv('CP1251', 'UTF-8', curl_exec($ch));
+
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $error = curl_error($ch);
         curl_close($ch);
@@ -60,7 +60,7 @@ class ProxyController extends Controller
         }
         unset($arr1[0]);
         $this->proxy_model->saveProxy($arr1);
-        //print_r($arr1);
+
     }
 
 
@@ -117,8 +117,7 @@ class ProxyController extends Controller
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1); // редирект
         curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; ru; rv:1.9.0.1) Gecko/2008070208');
         $out = curl_exec($ch);
-        //  echo $out;
-        //$out = iconv('CP1251', 'UTF-8', curl_exec($ch));
+
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $error = curl_error($ch);
         curl_close($ch);
@@ -148,9 +147,8 @@ class ProxyController extends Controller
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1); // редирект
         curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; ru; rv:1.9.0.1) Gecko/2008070208');
         $out = curl_exec($ch);
-        // echo $out;
 
-        //$out = iconv('CP1251', 'UTF-8', curl_exec($ch));
+
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $error = curl_error($ch);
         curl_close($ch);

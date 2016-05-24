@@ -7,7 +7,6 @@ echo "PROXY LOADING... \n";
 $proxy->searchProxy();
 $proxy->searchProxy2();
 $proxy->searchProxy5();    // парсинг списков прокси
-// $proxy->searchProxy3();
 $proxy->searchProxy4();
 $proxy->searchProxy6();
 $proxy->searchProxy7();
