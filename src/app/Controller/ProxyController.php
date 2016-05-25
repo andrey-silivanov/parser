@@ -216,7 +216,7 @@ class ProxyController extends Controller
         }
     }
 
-    public function getMultiProxy($proxy_server = [])
+    public function getMultiProxy($proxy_server = [], $stream)
     {
         echo "CHECK PROXY \n";
 
@@ -238,7 +238,7 @@ class ProxyController extends Controller
             $data = curl_exec($ch);
 
             $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            echo $proxy_server[$i]['ip'] . " - " . $http_code . "\n";
+            echo "Stream ".$stream." - ".$proxy_server[$i]['ip'] . " - " . $http_code . "\n";
             if ($http_code == 200) {
                 $this->proxy_model->updateProxy($proxy_server[$i]['id']);
             }

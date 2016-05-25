@@ -15,11 +15,25 @@ $proxy->searchProxy5();    // парсинг списков прокси
 $proxy->searchProxy4();
 $proxy->searchProxy6();
 $proxy->searchProxy7();
-
+$stream = $argv[1];
 
 $loop = React\EventLoop\Factory::create();
+
+for($i=1; $i<=$stream; $i++){
+    $process = new React\ChildProcess\Process('php streamProxy.php '. $stream.' '.$i);
+    $process->on('exit', function ($exitCode, $termSignal) {
+        echo "Child exit\n";
+    });
+    $loop->addTimer(0.501, function ($timer) use ($process) {
+        $process->start($timer->getLoop());
+        $process->stdout->on('data', function ($output, $i) {
+            echo " $i {$output}";
+        });
+    });
+    sleep(1);
+}
 // Stream 1
-$process = new React\ChildProcess\Process('php proxyStream1.php');
+/*$process = new React\ChildProcess\Process('php proxyStream1.php');
 $process->on('exit', function ($exitCode, $termSignal) {
     echo "Child exit\n";
 });
@@ -31,7 +45,7 @@ $loop->addTimer(0.001, function ($timer) use ($process) {
 });
 
 // Stream 2
-$process2 = new React\ChildProcess\Process('php proxyStream2.php');
+$process2 = new React\ChildProcess\Process('php proxyStream2.php' );
 $process2->on('exit', function ($exitCode, $termSignal) {
     echo "Child exit\n";
 });
@@ -65,7 +79,7 @@ $loop->addTimer(0.001, function ($timer) use ($process4) {
         echo "Stream 4 says: {$output}";
     });
 });
-
+*/
 $loop->addPeriodicTimer(5, function ($timer) {
     echo "Parent cannot be blocked by child\n";
 });
