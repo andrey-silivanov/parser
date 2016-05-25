@@ -3,12 +3,20 @@ require 'vendor/autoload.php';
 
 $people_model = new \app\Models\People();
 
-
+if (!isset($argv[1])) {
+    $argv[1] = 1;
+}
+if (!isset($argv[2])) {
+    $argv[2] = 1;
+}
 $stream = $argv[1];
-$j = $argv[2];
+
+$j = $argv[2]; // номер потока
 
 $people = $people_model->getPeople();
+
 $count = round(count($people) / $stream);
+
 $end = $count;
 if ($j <= 0) {
     echo "Error";
@@ -20,11 +28,12 @@ if ($j <= 0) {
 }
 
 $people = $people_model->getPeopleLimit($start, $end);
+
 $result = $people_model->getResult();
 if (empty($result)) {
     $result[0]['user_id'] = 0;
 }
-
+//print_r($people);
 $people = TwoArray($people, $result); // удаляет имена из массива которые уже сохранены в таблице result
 
 for ($i = 0; $i < count($people); $i++) {
