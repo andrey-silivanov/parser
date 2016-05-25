@@ -20,11 +20,11 @@ class ParserController extends Controller
 
     }
 
-    public function google($name, $surname, $user_id = null)
+    public function google($name, $surname, $user_id = null, $stream = null)
     {
 
         $url = 'http://www.google.com/search?num=20&q=' . $name . '+' . $surname;
-        $content = $this->getContent($url);
+        $content = $this->getContent($url, $stream);
         if (empty($content)) {
             echo "<<<<====== END PROXY ======>>>>";
         } else {
@@ -87,7 +87,7 @@ class ParserController extends Controller
     }
 
 
-    public function getContent($url)
+    public function getContent($url, $stream)
     {
         $proxy_model = new Proxy();
         $proxies = $proxy_model->getGoodProxy();
@@ -95,7 +95,7 @@ class ParserController extends Controller
             echo "<<<<======= PROXY NOT FOUND =======>>>>>>\n";
             exit();
         }
-
+        shuffle($proxies);
         $steps = count($proxies);
         $step = 0;
         $try = true;
@@ -115,7 +115,7 @@ class ParserController extends Controller
             $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             curl_close($ch);
 
-            echo $proxy . " - " . $http_code . "\n";
+            echo "Stream ".$stream." - ".$proxy . " - " . $http_code . "\n";
             $step++;
             if ($http_code == 404) {
                 echo "<<<<<<<<<<<====== PAGE NOT FOUND =======>>>>>>>>>\n";

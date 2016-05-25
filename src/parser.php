@@ -3,11 +3,27 @@
 
 require 'vendor/autoload.php';
 
+$stream = $argv[1];
 
 $loop = React\EventLoop\Factory::create();
-// Stream 1
 
-$process = new React\ChildProcess\Process('php stream1.php');
+for($i=1; $i<=$stream; $i++){
+    $process = new React\ChildProcess\Process('php streamParser.php '. $stream.' '.$i);
+    $process->on('exit', function ($exitCode, $termSignal) {
+        echo "Child exit\n";
+    });
+    $loop->addTimer(0.501, function ($timer) use ($process) {
+        $process->start($timer->getLoop());
+        $process->stdout->on('data', function ($output) {
+            echo "{$output}";
+        });
+    });
+    sleep(1);
+}
+
+
+
+/*$process = new React\ChildProcess\Process('php stream1.php');
 $process->on('exit', function ($exitCode, $termSignal) {
     echo "Child exit\n";
 });
@@ -52,7 +68,7 @@ $loop->addTimer(0.001, function ($timer) use ($process4) {
     $process4->stdout->on('data', function ($output) {
         echo "Stream 4 says: {$output}";
     });
-});
+});*/
 
 $loop->addPeriodicTimer(5, function ($timer) {
     echo "Parent cannot be blocked by child\n";

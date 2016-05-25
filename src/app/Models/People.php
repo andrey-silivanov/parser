@@ -62,9 +62,9 @@ class People
         $sql = 'Select user_id from result order by user_id desc';
         $stmt = $db->prepare($sql);
         $stmt->execute();
-        $row = $stmt->fetchAll();
+        $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
         foreach ($row as $key => $value) {
-            $arr[$key] = $value[0];
+            $arr[$key] = $value;
 
         }
         return $arr;

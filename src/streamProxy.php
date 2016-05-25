@@ -24,5 +24,3 @@ if ($i == 0) {
 $server = $proxy_model->getProxyLimit($start, $end);
 echo "Stream " . $i . " -- ";
 $proxy->getMultiProxy($server, $i);
-
-
