@@ -26,8 +26,8 @@ for($i=1; $i<=$stream; $i++){
     });
     $loop->addTimer(0.501, function ($timer) use ($process) {
         $process->start($timer->getLoop());
-        $process->stdout->on('data', function ($output, $i) {
-            echo " $i {$output}";
+        $process->stdout->on('data', function ($output) {
+            echo "{$output}";
         });
     });
     sleep(1);
