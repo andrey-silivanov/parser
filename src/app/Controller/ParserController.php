@@ -87,10 +87,15 @@ class ParserController extends Controller
     }
 
 
-    public function getContent($url, $stream)
+    public function getContent($url, $stream = null)
     {
+        $path = "file/proxy.txt";
+
+        $f_proxy = fopen($path, 'r');
+        $proxy = fread($f_proxy, 65000);
+        $proxies = explode("\n", $proxy);
         $proxy_model = new Proxy();
-        $proxies = $proxy_model->getGoodProxy();
+        //$proxies = $proxy_model->getGoodProxy();
         if (empty($proxies)) {
             echo "<<<<======= PROXY NOT FOUND =======>>>>>>\n";
             exit();
@@ -101,7 +106,7 @@ class ParserController extends Controller
         $try = true;
 
         while ($try) {
-            $proxy = isset($proxies[$step]['ip']) ? $proxies[$step]['ip'] : null;
+            $proxy = isset($proxies[$step]) ? $proxies[$step] : null;
 
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
@@ -109,13 +114,13 @@ class ParserController extends Controller
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1); // редирект
             curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; ru; rv:1.9.0.1) Gecko/2008070208');
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-            curl_setopt($ch, CURLOPT_PROXY, $proxy);
+            curl_setopt($ch, CURLOPT_PROXY, trim($proxy));
             //  @curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
             $out = curl_exec($ch);
             $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             curl_close($ch);
 
-            echo "Stream ".$stream." - ".$proxy . " - " . $http_code . "\n";
+            echo "Stream " . $stream . " - " . trim($proxy) . " - " . $http_code . "\n";
             $step++;
             if ($http_code == 404) {
                 echo "<<<<<<<<<<<====== PAGE NOT FOUND =======>>>>>>>>>\n";

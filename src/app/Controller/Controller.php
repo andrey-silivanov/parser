@@ -20,9 +20,11 @@ class Controller
 
     public function start()
     {
-        $people_m = new People();
+       $people_m = new People();
         $proxy = new ProxyController();
-        echo "PROXY LOADING... \n";
+         echo "PROXY LOADING... \n";
+        //$proxy->searchProxy8();
+
 
         $proxy->searchProxy();
         $proxy->searchProxy2();
@@ -42,7 +44,8 @@ class Controller
             $checkPeople = 0;
         }
         echo $checkPeople;
-        for ($i = $checkPeople; $i < count($people); $i++) {
+
+        for ($i = 0; $i < count($people); $i++) {
 
             echo $people[$i]['first'] . " " . $people[$i]['last'] . "\n";
             $p = new ParserController();

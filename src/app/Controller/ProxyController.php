@@ -148,7 +148,6 @@ class ProxyController extends Controller
         curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; ru; rv:1.9.0.1) Gecko/2008070208');
         $out = curl_exec($ch);
 
-
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $error = curl_error($ch);
         curl_close($ch);
@@ -163,9 +162,7 @@ class ProxyController extends Controller
             }
         }
         $arr = explode(' ', $arr1[11]);
-
         unset($arr[count($arr) - 1]);
-
         $this->proxy_model->saveProxy($arr);
     }
 
@@ -182,9 +179,18 @@ class ProxyController extends Controller
         $this->proxy_model->saveProxy($arr1);
     }
 
+    public function searchProxy8()
+    {
+        $url = "http://free-pass.ru/forum/79-7962-1";
+        $page = file_get_contents($url);
+        $pattern = '/\d*\.\d*.\d*.\d*:\d*/';
+        preg_match_all($pattern, $page, $out);
+        $this->proxy_model->saveProxy($out[0]);
+    }
 
     public function getProxy()
     {
+
         echo "CHECK PROXY \n";
         $proxy_server = $this->proxy_model->getProxy();
         $url = 'https://www.google.com.ua/';
@@ -238,12 +244,14 @@ class ProxyController extends Controller
             $data = curl_exec($ch);
 
             $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            echo "Stream ".$stream." - ".$proxy_server[$i]['ip'] . " - " . $http_code . "\n";
+            echo "Stream " . $stream . " - " . $proxy_server[$i]['ip'] . " - " . $http_code . "\n";
             if ($http_code == 200) {
                 $this->proxy_model->updateProxy($proxy_server[$i]['id']);
             }
             curl_close($ch);
         }
     }
+
+
 }
 
