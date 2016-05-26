@@ -2,16 +2,16 @@
 require 'vendor/autoload.php';
 
 $people_model = new \app\Models\People();
-
-if (!isset($argv[1])) {
-    $argv[1] = 1;
+$stream = 1;
+$j = 1;  // номер потока
+if (isset($argv[1])) {
+    $stream = $argv[1];
 }
-if (!isset($argv[2])) {
-    $argv[2] = 1;
+if (isset($argv[2])) {
+    $j = $argv[2];
 }
-$stream = $argv[1];
 
-$j = $argv[2]; // номер потока
+
 
 $people = $people_model->getPeople();
 
@@ -52,8 +52,10 @@ function TwoArray($arr1, $arr2)
     for ($i = 0; $i < count($arr1); $i++) {
         for ($j = 0; $j < count($arr2); $j++) {
             if ($arr1[$i]['id'] == $arr2[$j]['user_id']) {
+
                 unset($arr1[$i]);
                 sort($arr1);
+                $i--;
             }
         }
     }

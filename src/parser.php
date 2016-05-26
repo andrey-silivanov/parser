@@ -2,11 +2,11 @@
 
 
 require 'vendor/autoload.php';
-
-if (!isset($argv[1])) {
-    $argv[1] = 1;
+$stream = 1;
+if (isset($argv[1])) {
+    $stream = $argv[1];
 }
-$stream = $argv[1];
+
 $loop = React\EventLoop\Factory::create();
 
 for ($i = 1; $i <= $stream; $i++) {

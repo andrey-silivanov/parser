@@ -1,8 +1,16 @@
 <?php
 require 'vendor/autoload.php';
 
-$stream = $argv[1];
-$i = $argv[2];
+$stream = 1;
+$i = 1;
+if (isset($argv[1])) {
+    $stream = $argv[1];
+}
+if (isset($argv[2])) {
+    $i = $argv[2];
+}
+
+
 $proxy = new \app\Controller\ProxyController();
 $proxy_model = new \app\Models\Proxy();
 

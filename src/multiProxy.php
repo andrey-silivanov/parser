@@ -15,10 +15,12 @@ $proxy->searchProxy5();    // парсинг списков прокси
 $proxy->searchProxy4();
 $proxy->searchProxy6();
 $proxy->searchProxy7();
-if (!isset($argv[1])) {
-    $argv[1] = 1;
+
+$stream = 1;
+if (isset($argv[1])) {
+    $stream = $argv[1];
 }
-$stream = $argv[1];
+
 
 $loop = React\EventLoop\Factory::create();
 
