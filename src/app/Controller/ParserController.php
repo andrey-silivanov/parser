@@ -137,11 +137,13 @@ class ParserController extends Controller
         $checkArray = [];
         $j = 0;
         for ($i = 0; $i < count($arr['title']); $i++) {
-            if (strpos($arr['title'][$i], $name) !== false || strpos($arr['snippet'][$i], $name) !== false) {
-                $checkArray[$j]['title'] = $arr['title'][$i];
-                $checkArray[$j]['snippet'] = $arr['snippet'][$i];
-                $checkArray[$j]['url'] = $arr['url'][$i];
-                $j++;
+            if (isset($arr['title'][$i]) && isset($arr['snippet'][$i])) {
+                if (strpos($arr['title'][$i], $name) !== false || strpos($arr['snippet'][$i], $name) !== false) {
+                    $checkArray[$j]['title'] = $arr['title'][$i];
+                    $checkArray[$j]['snippet'] = $arr['snippet'][$i];
+                    $checkArray[$j]['url'] = $arr['url'][$i];
+                    $j++;
+                }
             }
         }
         print_r($checkArray);
