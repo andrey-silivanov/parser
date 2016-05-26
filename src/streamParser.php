@@ -12,7 +12,6 @@ if (isset($argv[2])) {
 }
 
 
-
 $people = $people_model->getPeople();
 
 $count = round(count($people) / $stream);
@@ -51,11 +50,13 @@ function TwoArray($arr1, $arr2)
 {
     for ($i = 0; $i < count($arr1); $i++) {
         for ($j = 0; $j < count($arr2); $j++) {
-            if ($arr1[$i]['id'] == $arr2[$j]['user_id']) {
+            if (isset($arr1[$i]) && isset($arr2[$j])) {
+                if ($arr1[$i]['id'] == $arr2[$j]['user_id']) {
 
-                unset($arr1[$i]);
-                sort($arr1);
-                $i--;
+                    unset($arr1[$i]);
+                    sort($arr1);
+                    $i--;
+                }
             }
         }
     }
