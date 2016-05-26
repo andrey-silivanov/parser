@@ -20,7 +20,7 @@ class ParserController extends Controller
 
     }
 
-    public function google($name, $surname, $user_id = null, $stream = null)
+    public function google($name, $surname, $userId = null, $stream = null)
     {
 
         $url = 'http://www.google.com/search?num=20&q=' . $name . '+' . $surname;
@@ -28,15 +28,15 @@ class ParserController extends Controller
         if (empty($content)) {
             echo "<<<<====== END PROXY ======>>>>";
         } else {
-            $pars_array = [];
-            $pars_array['title'] = $this->getTitle($content);
-            $pars_array['url'] = $this->getUrl($content);
-            $pars_array['snippet'] = $this->getSnippet($content);
+            $parsArray = [];
+            $parsArray['title'] = $this->getTitle($content);
+            $parsArray['url'] = $this->getUrl($content);
+            $parsArray['snippet'] = $this->getSnippet($content);
 
-            $pars_array = $this->checkParsing($pars_array, $name);
-            for ($i = 0; $i < count($pars_array); $i++) {
+            $parsArray = $this->checkParsing($parsArray, $name);
+            for ($i = 0; $i < count($parsArray); $i++) {
                 $m = new People();
-                $m->saveResult($pars_array[$i], $user_id);
+                $m->saveResult($parsArray[$i], $userId);
             }
         }
     }
@@ -94,8 +94,8 @@ class ParserController extends Controller
         $f_proxy = fopen($path, 'r');
         $proxy = fread($f_proxy, 65000);
         $proxies = explode("\n", $proxy);*/
-        $proxy_model = new Proxy();
-        $proxies = $proxy_model->getGoodProxy();
+        $proxyModel = new Proxy();
+        $proxies = $proxyModel->getGoodProxy();
         if (empty($proxies)) {
             echo "<<<<======= PROXY NOT FOUND =======>>>>>>\n";
             exit();
@@ -117,15 +117,15 @@ class ParserController extends Controller
             curl_setopt($ch, CURLOPT_PROXY, trim($proxy));
             //  @curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
             $out = curl_exec($ch);
-            $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             curl_close($ch);
 
-            echo "Stream " . $stream . " - " . trim($proxy) . " - " . $http_code . "\n";
+            echo "Stream " . $stream . " - " . trim($proxy) . " - " . $httpCode . "\n";
             $step++;
-            if ($http_code == 404) {
+            if ($httpCode == 404) {
                 echo "<<<<<<<<<<<====== PAGE NOT FOUND =======>>>>>>>>>\n";
             }
-            $try = (($step < $steps) && $http_code != 200 && $http_code != 404);
+            $try = (($step < $steps) && $httpCode != 200 && $httpCode != 404);
             sleep(3);
         }
         return $out;

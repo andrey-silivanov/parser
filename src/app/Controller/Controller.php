@@ -20,26 +20,26 @@ class Controller
 
     public function start()
     {
-       $people_m = new People();
+        $peopleM = new People();
         $proxy = new ProxyController();
-         echo "PROXY LOADING... \n";
+        echo "PROXY LOADING... \n";
         //$proxy->searchProxy8();
-        $proxy->ProxyAPI(2);
+        $proxy->proxyAPI(2);
         exit();
-       // $proxy->getProxy();
-       //
-       // $proxy->searchProxy();
+        // $proxy->getProxy();
+        //
+        // $proxy->searchProxy();
         /*  $proxy->searchProxy2();
           $proxy->searchProxy5();    // парсинг списков прокси
          // $proxy->searchProxy3();
           $proxy->searchProxy4();
           $proxy->searchProxy6();
           $proxy->searchProxy7();*/
-       // exit();
-         // $proxy->getProxy(); //проверка прокси
+        // exit();
+        // $proxy->getProxy(); //проверка прокси
         echo "PARSING START \n";
-        $people = $people_m->getPeople();
-        $checkPeople = $people_m->getResult();
+        $people = $peopleM->getPeople();
+        $checkPeople = $peopleM->getResult();
         if (!empty($checkPeople)) {
             $checkPeople = $checkPeople[0];
         } else {
