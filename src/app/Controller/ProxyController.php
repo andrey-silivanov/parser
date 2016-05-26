@@ -190,9 +190,14 @@ class ProxyController extends Controller
 
     public function getProxy()
     {
+        $path = "file/proxy.txt";
+
+        $f_proxy = fopen($path, 'r');
+        $proxy = fread($f_proxy, 65000);
+        $proxy_server = explode("\n", $proxy);
 
         echo "CHECK PROXY \n";
-        $proxy_server = $this->proxy_model->getProxy();
+       // $proxy_server = $this->proxy_model->getProxy();
         $url = 'https://www.google.com.ua/';
         $user_agent = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:33.0) Gecko/20100101 Firefox/33.0";
         $timeout = 3;
@@ -209,12 +214,12 @@ class ProxyController extends Controller
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
-            curl_setopt($ch, CURLOPT_PROXY, $proxy_server[$i]['ip']);
+            curl_setopt($ch, CURLOPT_PROXY, trim($proxy_server[$i]));
 
             $data = curl_exec($ch);
 
             $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            echo $proxy_server[$i]['ip'] . " - " . $http_code . "\n";
+            echo $proxy_server[$i] . " - " . $http_code . "\n";
             if ($http_code == 200) {
                 $this->proxy_model->updateProxy($proxy_server[$i]['id']);
             }
@@ -249,6 +254,25 @@ class ProxyController extends Controller
                 $this->proxy_model->updateProxy($proxy_server[$i]['id']);
             }
             curl_close($ch);
+        }
+    }
+
+    public function ProxyAPI($count)
+    {
+       // $this->proxy_model->clearProxy();
+
+       for($i=0; $i<$count; $i++) {
+            $url = "http://gimmeproxy.com/api/getProxy?supportsHttps=false";
+            $page = file_get_contents($url);
+         //  echo $page;
+          //  exit();
+            if(isset($page)){
+            $page = json_decode($page);
+            $proxy = $page->ipPort;
+            echo $proxy."\n";
+            $this->proxy_model->saveOneProxy($proxy);
+            }
+            sleep(40);
         }
     }
 

@@ -89,13 +89,13 @@ class ParserController extends Controller
 
     public function getContent($url, $stream = null)
     {
-        $path = "file/proxy.txt";
+        /*$path = "file/proxy.txt";
 
         $f_proxy = fopen($path, 'r');
         $proxy = fread($f_proxy, 65000);
-        $proxies = explode("\n", $proxy);
+        $proxies = explode("\n", $proxy);*/
         $proxy_model = new Proxy();
-        //$proxies = $proxy_model->getGoodProxy();
+        $proxies = $proxy_model->getGoodProxy();
         if (empty($proxies)) {
             echo "<<<<======= PROXY NOT FOUND =======>>>>>>\n";
             exit();
@@ -126,8 +126,8 @@ class ParserController extends Controller
                 echo "<<<<<<<<<<<====== PAGE NOT FOUND =======>>>>>>>>>\n";
             }
             $try = (($step < $steps) && $http_code != 200 && $http_code != 404);
+            sleep(3);
         }
-
         return $out;
     }
 

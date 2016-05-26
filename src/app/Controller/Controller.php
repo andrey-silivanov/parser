@@ -24,17 +24,19 @@ class Controller
         $proxy = new ProxyController();
          echo "PROXY LOADING... \n";
         //$proxy->searchProxy8();
-
-
-        $proxy->searchProxy();
-        $proxy->searchProxy2();
-        $proxy->searchProxy5();    // парсинг списков прокси
-       // $proxy->searchProxy3();
-        $proxy->searchProxy4();
-        $proxy->searchProxy6();
-        $proxy->searchProxy7();
-
-        $proxy->getProxy(); //проверка прокси
+        $proxy->ProxyAPI(2);
+        exit();
+       // $proxy->getProxy();
+       //
+       // $proxy->searchProxy();
+        /*  $proxy->searchProxy2();
+          $proxy->searchProxy5();    // парсинг списков прокси
+         // $proxy->searchProxy3();
+          $proxy->searchProxy4();
+          $proxy->searchProxy6();
+          $proxy->searchProxy7();*/
+       // exit();
+         // $proxy->getProxy(); //проверка прокси
         echo "PARSING START \n";
         $people = $people_m->getPeople();
         $checkPeople = $people_m->getResult();
@@ -46,7 +48,6 @@ class Controller
         echo $checkPeople;
 
         for ($i = 0; $i < count($people); $i++) {
-
             echo $people[$i]['first'] . " " . $people[$i]['last'] . "\n";
             $p = new ParserController();
             $p->google($people[$i]['first'], $people[$i]['last'], $people[$i]['id']);
