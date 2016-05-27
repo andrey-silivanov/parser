@@ -28,7 +28,7 @@ $proxyModel = new \app\Models\Proxy();
         $start = $start+10;
     }
 
-$process = new React\ChildProcess\Process('php stream.php ');
+/*$process = new React\ChildProcess\Process('php stream.php ');
 $process->on('exit', function ($exitCode, $termSignal) {
     echo "Child exit\n";
 });
@@ -37,7 +37,7 @@ $loop->addTimer(0.501, function ($timer) use ($process) {
     $process->stdout->on('data', function ($output) {
         echo "{$output}";
     });
-});
+});*/
 $loop->addPeriodicTimer(5, function ($timer) {
     echo "Parent cannot be blocked by child\n";
 });
