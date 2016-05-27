@@ -71,11 +71,12 @@ class People
 
     }
 
+
     public function getPeopleLimit($start, $end){
 
         $db = DataBase::getInstance();
         $arr = [];
-        $sql = "SELECT * FROM names LIMIT $start,$end";
+        $sql = "SELECT * FROM names WHERE id NOT IN( SELECT user_id FROM result) LIMIT $start, $end";
         $stmt = $db->prepare($sql);
         $stmt->execute();
         $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
