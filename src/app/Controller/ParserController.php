@@ -25,9 +25,17 @@ class ParserController extends Controller
 
         $url = 'http://www.google.com/search?num=20&q=' . $name . '+' . $surname;
         $content = $this->getContent($url, $stream);
+        $m = new People();
         if (empty($content)) {
             echo "<<<<====== END PROXY ======>>>>";
-        } else {
+        }
+        elseif($content == 404){
+            $parsArray['title'] = " ";
+            $parsArray['url'] = " ";
+            $parsArray['snippet'] = " ";
+            $m->saveResult($parsArray, $userId);
+        }
+        else {
             $parsArray = [];
             $parsArray['title'] = $this->getTitle($content);
             $parsArray['url'] = $this->getUrl($content);
@@ -35,7 +43,7 @@ class ParserController extends Controller
 
             $parsArray = $this->checkParsing($parsArray, $name);
             for ($i = 0; $i < count($parsArray); $i++) {
-                $m = new People();
+
                 $m->saveResult($parsArray[$i], $userId);
             }
         }
@@ -124,6 +132,7 @@ class ParserController extends Controller
             $step++;
             if ($httpCode == 404) {
                 echo "<<<<<<<<<<<====== PAGE NOT FOUND =======>>>>>>>>>\n";
+                return $out = 404;
             }
             $try = (($step < $steps) && $httpCode != 200 && $httpCode != 404);
             sleep(3);

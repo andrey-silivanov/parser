@@ -12,8 +12,7 @@ $proxy = new \app\Controller\ProxyController();
 $proxyModel = new \app\Models\Proxy();
 
 //$proxyModel->clearProxy();
-//$proxy->ProxyAPI(100);
-
+//$proxy->proxyAPI(100);
 
     for ($i = 1; $i <= $stream; $i++) {
         $process = new React\ChildProcess\Process('php streamParser.php ' . $stream . ' ' . $i . ' ' . $start);
