@@ -16,16 +16,16 @@ if (isset($argv[3])) {
 }
 
 $try = true;
-while($try){
-$people = $peopleModel->getPeopleLimit($start, 10);
-for ($i = 0; $i < count($people); $i++) {
-    echo "Stream ".$j." - ".$start;
-    echo $people[$i]['first'] . " " . $people[$i]['last'] . "\n";
-    $p = new \app\Controller\ParserController();
-    $p->google($people[$i]['first'], $people[$i]['last'], $people[$i]['id'], $j);
+while ($try) {
+    $people = $peopleModel->getPeopleLimit($start, 10);
+    for ($i = 0; $i < count($people); $i++) {
+        echo "Stream " . $j . " - " . $start;
+        echo $people[$i]['first'] . " " . $people[$i]['last'] . "\n";
+        $p = new \app\Controller\ParserController();
+        $p->google($people[$i]['first'], $people[$i]['last'], $people[$i]['id'], $j);
 
-}
- $try = (count($people)>0);
+    }
+    $try = (count($people) > 0);
 }
 
 
