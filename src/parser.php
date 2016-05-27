@@ -43,5 +43,5 @@ $loop->addPeriodicTimer(5, function ($timer) {
 });
 $loop->run();
 
-/*E:\OpenServer\modules\php\PHP-5.6\php E:\OpenServer\domains\parser\src\parser.php*/
+/*C:\OpenServer\modules\php\PHP-5.6\php C:\OpenServer\domains\parser\src\parser.php*/
 
